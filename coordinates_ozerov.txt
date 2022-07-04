@@ -1,0 +1,15 @@
+population_ID RG Latitude Longitude   source          type
+Suma Eastern_Barents_White_Sea 64.28 35.40 Bourret_et_al_2013 decimal
+Alta Northern_Norway 69°58 23°22 Ozerov_et_al_2013 coordinate
+Lakselva Northern_Norway 70°04 24°55 Ozerov_et_al_2013 coordinate
+Laukhelle Northern_Norway 69°13	17°50 Ozerov_et_al_2013 coordinate
+Malselva Northern_Norway 69°13 18°29 Ozerov_et_al_2013 coordinate
+Mezen_Pizhma Eastern_Barents_White_Sea 65°53 44°08 Ozerov_et_al_2013 coordinate
+Neiden EasternFinnmark_Kola_P 69°42 29°31 Ozerov_et_al_2013 coordinate
+Onega Eastern_Barents_White_Sea 63°54 38°00 Ozerov_et_al_2013 coordinate   
+Ponoi Eastern_Barents_White_Sea 66°58 41°16 Ozerov_et_al_2013 coordinate
+Pechora_Pizhma Eastern_Barents_White_Sea 64°52 51°16 Ozerov_et_al_2013 coordinate
+Reisa Northern_Norway 69°46 21°00 Ozerov_et_al_2013 coordinate
+Pechora_Unya Eastern_Barents_White_Sea 61°47 57°52 Ozerov_et_al_2013 coordinate	
+Ura EasternFinnmark_Kola_P 69°16 32°48 Ozerov_et_al_2013 coordinate
+VJ Northern_Norway 70°06 29°19 Ozerov_et_al_2013 coordinate
