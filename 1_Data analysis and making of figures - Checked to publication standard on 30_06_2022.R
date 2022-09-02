@@ -1030,7 +1030,7 @@ names(populations_2)[2]<- "population_best_estimate"
 table(populations_2$population_best_estimate)
 
 length(unique(populations_2$uniqueID3))
-length(unique(data_2$uniqueID3))
+length(unique(data_1$uniqueID3))
 
 table(populations_2$uniqueID3 %in% data_1$uniqueID3)
 
@@ -1096,12 +1096,12 @@ ifelse(river_coordinates_3$population_ID == "Tuloma",
         "EasternFinnmark_Kola_P", NA)))))
 
 # 8.5.3 Remove unnecessary character from coordinates----  
-coordinates_ozerov[, 3]<- gsub("Â", "" , coordinates_ozerov[, 3])
-coordinates_ozerov[, 4]<- gsub("Â", "" , coordinates_ozerov[, 4])
+coordinates_ozerov[, 3]<- gsub("Ã‚", "" , coordinates_ozerov[, 3])
+coordinates_ozerov[, 4]<- gsub("Ã‚", "" , coordinates_ozerov[, 4])
 
 # 8.5.4 Convert coordinates to decimals----  
-coordinates_ozerov[, 3]<- gsub("°", " " , coordinates_ozerov[, 3])
-coordinates_ozerov[, 4]<- gsub("°", " " , coordinates_ozerov[, 4])
+coordinates_ozerov[, 3]<- gsub("Â°", " " , coordinates_ozerov[, 3])
+coordinates_ozerov[, 4]<- gsub("Â°", " " , coordinates_ozerov[, 4])
 
 coordinates_ozerov_2<- coordinates_ozerov[-1, ]
 
@@ -1135,7 +1135,7 @@ coordinates_all_rivers$Latitude<- as.numeric(coordinates_all_rivers$Latitude)
 coordinates_all_rivers$Longitude<- as.numeric(coordinates_all_rivers$Longitude)
 coordinates_all_rivers$RG<- as.factor(as.character(coordinates_all_rivers$RG))
 
-length(unique(data_3$population_best_estimate))
+length(unique(data_2$population_best_estimate))
 length(unique(coordinates_all_rivers$population_ID))
 length(unique(paste(coordinates_all_rivers$Latitude, 
                     coordinates_all_rivers$Latitude)))
@@ -1161,9 +1161,7 @@ baseline_coordinates$RG<-
 summary(baseline_coordinates)
 
 # 8.5.6 Map all populations----
-ggplot(data = world)+
-  geom_sf()+
-  coord_sf(xlim = c(-70, 60), ylim = c(40, 71), expand = T) +
+basemap(world, bathymetry = T, limits = c(-70, 40, 40, 80)) +
   xlab("\nLongitude")+
   ylab("Latitude\n")+
   theme_bw() +
@@ -1177,8 +1175,8 @@ ggplot(data = world)+
         axis.text.y = element_text(face="bold", size=14, colour = "black"),
         axis.title = element_text(size = 10, colour = "black"))+
   
-  geom_point(data = baseline_coordinates,
-             aes(longitude, latitude, color = RG), size =5, shape = 16)
+  geom_spatial_point(data = baseline_coordinates, 
+                     aes(longitude, latitude, color = RG), size =5, shape = 16)
 
 
 
@@ -1217,5 +1215,72 @@ total_returns_PE[2]/all_NA
 
 
 
+# 10.0 Figure S2----
+
+mean(fishery_data$fork_length[fishery_data$sea_age =="1"])
+
+sd(fishery_data$fork_length[fishery_data$sea_age =="1"])
+
+fishery_data$Gross_SA_for_plotting<- 
+  as.factor(ifelse(fishery_data$sea_age == "1", "1SW", "MSW"))
+
+table(fishery_data$Gross_SA_for_plotting, useNA = "always")
+table(fishery_data$sex, useNA = "always")
+fishery_data_all_sexes_known<- subset(fishery_data, is.na(sex) == FALSE)
+
+table(fishery_data_all_sexes_known$sex, useNA = "always")
+
+table(fishery_data_all_sexes_known$Gross_SA_for_plotting, 
+      fishery_data_all_sexes_known$sex)
+
+fishery_data_92_93_season<- 
+  subset(fishery_data_all_sexes_known, season == "92/93")
+
+fishery_data_93_94_season<- 
+  subset(fishery_data_all_sexes_known, season == "93/94")
+
+table(fishery_data_92_93_season$Gross_SA_for_plotting, 
+      fishery_data_92_93_season$sex)
+
+table(fishery_data_93_94_season$Gross_SA_for_plotting, 
+      fishery_data_93_94_season$sex)
 
 
+
+
+fork_lengths_1<-  ggplot(fishery_data_all_sexes_known,
+                         aes(x=Gross_SA_for_plotting, y=fork_length, fill=sex))+
+  geom_boxplot() +
+  geom_jitter(color="black", size=0.4, alpha=0.9)+
+  
+  theme_bw() + 
+  theme(legend.position = "none",
+        text = element_text(size = 30),
+        axis.text = element_text( colour = "black", size = 20)) +
+  xlab("") + ylab("")
+
+fork_lengths_2<- ggplot(fishery_data_92_93_season, 
+                        aes(x=Gross_SA_for_plotting, y=fork_length, fill=sex))+
+  geom_boxplot() +
+  geom_jitter(color="black", size=0.4, alpha=0.9)+
+  
+  theme_bw() + 
+  theme(legend.position = "none",
+        text = element_text(size = 30),
+        axis.text = element_text( colour = "black", size = 20)) +
+  xlab("") + ylab("")
+
+fork_lengths_3<-  ggplot(fishery_data_93_94_season, 
+                         aes(x=Gross_SA_for_plotting, y=fork_length, fill=sex))+
+  geom_boxplot() +
+  geom_jitter(color="black", size=0.4, alpha=0.9)+
+  
+  theme_bw() + 
+  theme(legend.position = "none",
+        text = element_text(size = 30),
+        axis.text = element_text( colour = "black", size = 20)) +
+  xlab("") + ylab("")
+
+plot_layout<- rbind(c(1), c(2, 3))
+grid.arrange(fork_lengths_1, fork_lengths_2, fork_lengths_3,
+             layout_matrix = plot_layout)
