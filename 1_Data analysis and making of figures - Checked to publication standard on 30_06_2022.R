@@ -32,7 +32,8 @@ library(ggsn)
 library(stringr)
 library(ggOceanMaps)
 library(ggOceanMapsData)
-
+library(gtsummary)
+                    
 
 
                     
@@ -1215,7 +1216,11 @@ total_returns_PE[2]/all_NA
 
 
 
-# 10.0 Figure S2----
+                    ############################################################
+                    #                                                          #
+                    #                   10.0 Figure S2----                     #
+                    #                                                          #
+                    ############################################################
 
 mean(fishery_data$fork_length[fishery_data$sea_age =="1"])
 
@@ -1284,3 +1289,27 @@ fork_lengths_3<-  ggplot(fishery_data_93_94_season,
 plot_layout<- rbind(c(1), c(2, 3))
 grid.arrange(fork_lengths_1, fork_lengths_2, fork_lengths_3,
              layout_matrix = plot_layout)
+
+
+
+
+                    ############################################################
+                    #                                                          #
+                    #             11.0 Supplementary analysis----              #
+                    #                                                          #
+                    ############################################################
+
+# 11.1 Choose reporting groups with substantial numbers of 1SW fish----
+fishery_data_1sw<- 
+  fishery_data[fishery_data$sea_age == 1 & (fishery_data$best_estimate == "England_Ireland" | fishery_data$best_estimate == "Southern_Norway" ),]
+
+# 11.2 Control for seasonal effects since fish can grow 
+# across the fishing period----
+table(fishery_data_1sw$best_estimate, fishery_data_1sw$fishing_season)
+
+# 11.3 Test for differences in fork length within season and 
+# between reporting groups----
+fork_length_model<- lm(log(fishery_data_1sw$fork_length) ~ fishery_data_1sw$fishing_season/fishery_data_1sw$best_estimate)
+summary(fork_length_model)
+
+tbl_regression(fork_length_model)
